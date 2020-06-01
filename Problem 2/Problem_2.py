@@ -221,9 +221,9 @@ for x in collection_a:
 
 print()
 print('Total positive words for article one is',tvebus)
-print('Total positive words for article one is',tvetrain)
-print('Total positive words for article one is',tvewalk)
-print('Total positive words for article one is',tvecar)
+print('Total positive words for article two is',tvetrain)
+print('Total positive words for article three is',tvewalk)
+print('Total positive words for article four is',tvecar)
 print()
 print('Total negative words for article one is', nvewalk)
 print('Total negative words for article two is', nvetrain)
