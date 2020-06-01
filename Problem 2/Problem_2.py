@@ -1,37 +1,100 @@
-# Problem 2: Even the shortest path able to be determine, passengers are still facing
-# daily problem due to the long waiting time. The unusual and unexpected condition during
-# the journey such as unexpected traffic congestion, unexpected delay, randomness in passengers’
-# demands and weather changes need to be considered before making suggestion.
 import re
+import urllib.request
+
+from bs4 import BeautifulSoup
+from bs4.element import Comment
+import time
 
 frequency = {}
-# i masukkan article tu dalam file, so ni utk baca and print
-f = open('TransportationInMalaysia.txt')
-article = f.read()
-f.close()
 
-print(article)
-# ni method utk cari all the word frequency dalam file tu
-document_text = open('TransportationInMalaysia.txt', 'r')
-text_string = document_text.read().lower()
-match_pattern = re.findall(r'\b[a-z]{3,15}\b', text_string)
 
-for word in match_pattern:
+def tag_visible(element):
+    if element.parent.name in ['style', 'script', 'head', 'title', 'meta', '[document]']:
+        return False
+    if isinstance(element, Comment):
+        return False
+    return True
+
+
+def text_from_html(body):
+    soup = BeautifulSoup(body, 'html.parser')
+    texts = soup.findAll(text=True)
+    visible_texts = filter(tag_visible, texts)
+    return u" ".join(t.strip() for t in visible_texts)
+
+
+# articles
+bus = urllib.request.urlopen('http://www.tamannegara.asia/blog/travel/travel-in-malaysia-by-bus/').read()
+# print(text_from_html(bus))
+print('Article 1 extracted...')
+train = urllib.request.urlopen('https://malaysiatrains.com/type-of-trains-in-malaysia/').read()
+# print(text_from_html(mrt))
+print('Article 2 extracted...')
+walk = urllib.request.urlopen('https://www.marketing-interactive.com/tourism-malaysia-and-barbie-get-malaysians'
+                              '-walking-around-town-with-their-dolls').read()
+# print(text_from_html(walk))
+print('Article 3 extracted...')
+car = urllib.request.urlopen('https://www.straitstimes.com/singapore/transport/booking-grab-ride-in-malaysia-submit'
+                             '-selfie-first').read()
+# print(text_from_html(car))
+print('Article 4 extracted...')
+
+print('Total number of words for the first article: \n', (len(bus)), 'words')
+print('Total number of words for the second article: \n', (len(train)), 'words')
+print('Total number of words for the third article: \n', (len(walk)), 'words')
+print('Total number of words for the fourth article: \n', (len(car)), 'words')
+
+print('           Word Frequency for the 1st article: ')
+print('▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼')
+# ni method utk cari all the word frequency dalam web html tu
+one_text = (text_from_html(bus)).lower()
+one_pattern = re.findall(r'\b[a-z]{3,15}\b', one_text)
+
+for word in one_pattern:
     count = frequency.get(word, 0)
     frequency[word] = count + 1
 
 frequency_list = frequency.keys()
 
-print('◇─◇──◇────◇────◇────◇────◇────◇─────◇──◇─◇')
-print('               Word Frequency: ')
-print('◇─◇──◇────◇────◇────◇────◇────◇─────◇──◇─◇')
+print('           Word Frequency for the 2nd article: ')
+print('▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼')
+two_text = (text_from_html(train)).lower()
+two_pattern = re.findall(r'\b[a-z]{3,15}\b', two_text)
+for word in two_pattern:
+    count = frequency.get(word, 0)
+    frequency[word] = count + 1
 
+frequency_list = frequency.keys()
 for words in frequency_list:
     print(words, frequency[words])
 
-print('◇─◇──◇────◇────◇────◇────◇────◇─────◇──◇─◇')
-print('              Stop words frequency: ')
-print('◇─◇──◇────◇────◇────◇────◇────◇─────◇──◇─◇')
+print('           Word Frequency for the 3rd article: ')
+print('▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼')
+three_text = (text_from_html(walk)).lower()
+three_pattern = re.findall(r'\b[a-z]{3,15}\b', three_text)
+for word in three_pattern:
+    count = frequency.get(word, 0)
+    frequency[word] = count + 1
+
+frequency_list = frequency.keys()
+for words in frequency_list:
+    print(words, frequency[words])
+
+print('           Word Frequency for the 4th article: ')
+print('▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼')
+four_text = (text_from_html(car)).lower()
+four_pattern = re.findall(r'\b[a-z]{3,15}\b', four_text)
+
+for word in four_pattern:
+    count = frequency.get(word, 0)
+    frequency[word] = count + 1
+
+frequency_list = frequency.keys()
+for words in frequency_list:
+    print(words, frequency[words])
+
+print('           Stop Words Frequency for the 4th article: ')
+print('▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼')
 
 
 def search(word, text):  # using rabin-karp algorithm method untuk cari stop words and frequency dia
@@ -58,7 +121,7 @@ def search(word, text):  # using rabin-karp algorithm method untuk cari stop wor
             print('The word', word, 'appears: ', counter, 'time!')
 
 
-whole_word = article
+collection_a = [one_text, two_text, three_text, four_text]
 pat = 'i me my myself we our ours ourselves you your yours yourself yourselves he him his himself she her hers herself ' \
       'it its itself they them their theirs themselves what which who whom this that these those am is are was were be ' \
       'been being have has had having do does did doing a an the and but if or because as until while of at by for ' \
@@ -66,107 +129,132 @@ pat = 'i me my myself we our ours ourselves you your yours yourself yourselves h
       'under again further then once here there when where why how all any both each few more most other some such no ' \
       'nor not only own same so than too very s t can will just don should now '
 # pat ni list of stopwords
-for stop_words in pat.split():
-    search(stop_words, whole_word)
+for x in collection_a:
+    for stop_words in pat.split():
+        search(stop_words, x)
 
 # ni utk delete stopwords
-resultwords = [word for word in re.split("\W+", whole_word) if word.lower() not in stop_words]
-print('◇─◇──◇────◇────◇────◇────◇────◇─────◇──◇─◇')
-print('               Without stopwords: ')
-print('◇─◇──◇────◇────◇────◇────◇────◇─────◇──◇─◇')
-result = ' '.join(resultwords)
+for x in collection_a:
+    resultwords = [word for word in re.split("\W+", x) if word.lower() not in stop_words]
+    print('━━━━━━━━━━━━━━━━ ✠ ━━━━━━━━━━━━━━━━')
+    print('          Without stopwords: ')
+    print('━━━━━━━━━━━━━━━━ ✠ ━━━━━━━━━━━━━━━━')
+    result = ' '.join(resultwords)
+    print(result)
+    # positive words file
+    f = open('positive_words.txt')
+    positive = f.read()
+    f.close()
+    # negative words file
+    f = open('negative_words.txt')
+    negative = f.read()
+    f.close()
 
-print(result)
-# positive words file
-f = open('positive_words.txt')
-positive = f.read()
-f.close()
-# negative words file
-f = open('negative_words.txt')
-negative = f.read()
-f.close()
-
-
-# KMP string matching algorithm
-def KMPSearch(pat, txt):
+def naiveSearch(pat, txt):
     M = len(pat)
     N = len(txt)
 
-    # create lps[] that will hold the longest prefix suffix
-    # values for pattern
-    lps = [0] * M
-    j = 0  # index for pat[]
+    # A loop to slide pat[] one by one */
+    for i in range(N - M + 1):
+        j = 0
 
-    # Preprocess the pattern (calculate lps[] array)
-    computeLPSArray(pat, M, lps)
-
-    i = 0  # index for txt[]
-    while i < N:
-        if pat[j] == txt[i]:
-            i += 1
+        # For current index i, check
+        # for pattern match */
+        while (j < M):
+            if (txt[i + j] != pat[j]):
+                break
             j += 1
 
-        if j == M:
-            print("Found pattern at index " + str(i - j))
-            j = lps[j - 1]
-
-            # mismatch after j matches
-        elif i < N and pat[j] != txt[i]:
-            # Do not match lps[0..lps[j-1]] characters,
-            # they will match anyway
-            if j != 0:
-                j = lps[j - 1]
-            else:
-                i += 1
+        if (j == M):
+            print("Pattern found at index ", i)
 
 
-def computeLPSArray(pat, M, lps):
-    len = 0  # length of the previous longest prefix suffix
+print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+print('             Positive words: ')
+print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 
-    lps[0]  # lps[0] is always 0
-    i = 1
-
-    # the loop calculates lps[i] for i = 1 to M-1
-    while i < M:
-        if pat[i] == pat[len]:
-            len += 1
-            lps[i] = len
-            i += 1
-        else:
-            # This is tricky. Consider the example.
-            # AAACAAAA and i = 7. The idea is similar
-            # to search step.
-            if len != 0:
-                len = lps[len - 1]
-
-                # Also, note that we do not increment i here
-            else:
-                lps[i] = 0
-                i += 1
-
-
-print('◇─◇──◇────◇────◇────◇────◇────◇─────◇──◇─◇')
-print('               Positive words: ')
-print('◇─◇──◇────◇────◇────◇────◇────◇─────◇──◇─◇')
 i = 0
 j = 0
+tvebus = 0
+tvewalk = 0
+tvetrain = 0
+tvecar = 0
+nvebus = 0
+nvewalk = 0
+nvetrain = 0
+nvecar = 0
 
-for pos_word in positive.split():
-    KMPSearch(pos_word, whole_word)
-    i += 1
+for x in collection_a:
+    for pos_words in positive.split():
+        naiveSearch(pos_words, x)
+        if x == collection_a[0]:
+            if pos_words in x:
+                tvebus += 1
+        elif x == collection_a[1]:
+            if pos_words in x:
+                tvetrain += 1
+        elif x == collection_a[2]:
+            if pos_words in x:
+                tvewalk += 1
+        elif x == collection_a[3]:
+            if pos_words in x:
+                tvecar += 1
 
-print('◇─◇──◇────◇────◇────◇────◇────◇─────◇──◇─◇')
-print('               Negative words: ')
-print('◇─◇──◇────◇────◇────◇────◇────◇─────◇──◇─◇')
-for neg_word in negative.split():
-    KMPSearch(neg_word, whole_word)
-    j += 1
+print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+print('            Negative words: ')
+print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+for x in collection_a:
+    for neg_words in negative.split():
+        naiveSearch(neg_words, x)
+        if x == collection_a[0]:
+            if neg_words in x:
+                nvebus += 1
+        elif x == collection_a[1]:
+            if neg_words in x:
+                nvetrain += 1
+        elif x == collection_a[2]:
+            if neg_words in x:
+                nvewalk += 1
+        elif x == collection_a[3]:
+            if neg_words in x:
+                nvecar += 1
 
 print()
-print('◇─◇──◇────◇────◇────◇────◇────◇─────◇──◇─◇')
-print('               Conclusion: ')
-print('◇─◇──◇────◇────◇────◇────◇────◇─────◇──◇─◇')
-if (i > j):
-    print('The article is giving positive sentiment.')
-else:
-    print('The article is giving negative sentiment.')
+print('Total positive words for article one is',tvebus)
+print('Total positive words for article one is',tvetrain)
+print('Total positive words for article one is',tvewalk)
+print('Total positive words for article one is',tvecar)
+print()
+print('Total negative words for article one is', nvewalk)
+print('Total negative words for article two is', nvetrain)
+print('Total negative words for article three is', nvewalk)
+print('Total negative words for article four is', nvecar)
+
+print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+print('            Conclusion: ')
+print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+
+ListA = [tvebus, tvetrain, tvewalk, tvecar]
+ListB = [nvebus, nvetrain, nvewalk, nvecar]
+
+for x in ListA:
+    if x == ListA[0]:
+        if x > ListB[0]:
+            print('The article with regards to using bus as public transport is giving positive sentiment')
+        else:
+            print('The article with regards to using bus as public transport is giving negative sentiment')
+    if x == ListA[1]:
+        if x > ListB[1]:
+            print('The article with regards to using train as public transport is giving positive sentiment')
+        else:
+            print('The article with regards to using train as public transport is giving negative sentiment')
+    if x == ListA[2]:
+        if x > ListB[2]:
+            print('The article with regards to using walk as public transport is giving positive sentiment')
+        else:
+            print('The article with regards to using walk as public transport is giving negative sentiment')
+    if x == ListA[3]:
+        if x > ListB[3]:
+            print('The article with regards to using car as public transport is giving positive sentiment')
+        else:
+            print('The article with regards to using car as public transport is giving negative sentiment')
