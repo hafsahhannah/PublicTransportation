@@ -3,8 +3,7 @@ import urllib.request
 
 from bs4 import BeautifulSoup
 from bs4.element import Comment
-import time
-from typing import *
+from collections import defaultdict
 
 frequency = {}
 
@@ -151,8 +150,6 @@ for x in collection_a:
     negative = f.read()
     f.close()
 
-from collections import defaultdict
-
 
 def boyer_moore_horspool(pattern, text):
     m = len(pattern)
@@ -184,11 +181,9 @@ def boyer_moore_horspool(pattern, text):
 
 
 print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-print('             Positive & Negative words: ')
+print('         Positive & Negative words: ')
 print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 
-i = 0
-j = 0
 tvebus = 0
 tvewalk = 0
 tvetrain = 0
