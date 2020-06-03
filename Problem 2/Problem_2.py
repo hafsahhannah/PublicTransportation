@@ -4,6 +4,7 @@ import urllib.request
 from bs4 import BeautifulSoup
 from bs4.element import Comment
 import time
+from typing import *
 
 frequency = {}
 
@@ -24,18 +25,18 @@ def text_from_html(body):
 
 
 # articles
-bus = urllib.request.urlopen('http://www.tamannegara.asia/blog/travel/travel-in-malaysia-by-bus/').read()
+bus = urllib.request.urlopen('https://www.tripadvisor.com.my/ShowUserReviews-g298570-d6652603-r527465461'
+                             '-GO_KL_City_Bus-Kuala_Lumpur_Wilayah_Persekutuan.html').read()
 # print(text_from_html(bus))
 print('Article 1 extracted...')
-train = urllib.request.urlopen('https://malaysiatrains.com/type-of-trains-in-malaysia/').read()
+train = urllib.request.urlopen('https://en.antaranews.com/news/122433/using-mrt-to-go-around-kuala-lumpur').read()
 # print(text_from_html(mrt))
 print('Article 2 extracted...')
 walk = urllib.request.urlopen('https://www.marketing-interactive.com/tourism-malaysia-and-barbie-get-malaysians'
                               '-walking-around-town-with-their-dolls').read()
 # print(text_from_html(walk))
 print('Article 3 extracted...')
-car = urllib.request.urlopen('https://www.straitstimes.com/singapore/transport/booking-grab-ride-in-malaysia-submit'
-                             '-selfie-first').read()
+car = urllib.request.urlopen('https://www.entrepreneur.com/article/334690').read()
 # print(text_from_html(car))
 print('Article 4 extracted...')
 
@@ -150,27 +151,40 @@ for x in collection_a:
     negative = f.read()
     f.close()
 
-def naiveSearch(pat, txt):
-    M = len(pat)
-    N = len(txt)
+from collections import defaultdict
 
-    # A loop to slide pat[] one by one */
-    for i in range(N - M + 1):
-        j = 0
 
-        # For current index i, check
-        # for pattern match */
-        while (j < M):
-            if (txt[i + j] != pat[j]):
-                break
-            j += 1
+def boyer_moore_horspool(pattern, text):
+    m = len(pattern)
+    n = len(text)
 
-        if (j == M):
-            print("Pattern found at index ", i)
+    if m > n:
+        return -1
+
+    skip = defaultdict(lambda: m)
+    found_indexes = []
+
+    for k in range(m - 1):
+        skip[ord(pattern[k])] = m - k - 1
+
+    k = m - 1
+
+    while k < n:
+        j = m - 1
+        i = k
+        while j >= 0 and text[i] == pattern[j]:
+            j -= 1
+            i -= 1
+        if j == -1:
+            found_indexes.append(i + 1)
+
+        k += skip[ord(text[k])]
+
+    return found_indexes
 
 
 print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-print('             Positive words: ')
+print('             Positive & Negative words: ')
 print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 
 i = 0
@@ -186,7 +200,7 @@ nvecar = 0
 
 for x in collection_a:
     for pos_words in positive.split():
-        naiveSearch(pos_words, x)
+        boyer_moore_horspool(pos_words, x)
         if x == collection_a[0]:
             if pos_words in x:
                 tvebus += 1
@@ -200,12 +214,12 @@ for x in collection_a:
             if pos_words in x:
                 tvecar += 1
 
-print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-print('            Negative words: ')
-print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+# print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+# print('            Negative words: ')
+# print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 for x in collection_a:
     for neg_words in negative.split():
-        naiveSearch(neg_words, x)
+        boyer_moore_horspool(neg_words, x)
         if x == collection_a[0]:
             if neg_words in x:
                 nvebus += 1
@@ -220,10 +234,10 @@ for x in collection_a:
                 nvecar += 1
 
 print()
-print('Total positive words for article one is',tvebus)
-print('Total positive words for article two is',tvetrain)
-print('Total positive words for article three is',tvewalk)
-print('Total positive words for article four is',tvecar)
+print('Total positive words for article one is', tvebus)
+print('Total positive words for article two is', tvetrain)
+print('Total positive words for article three is', tvewalk)
+print('Total positive words for article four is', tvecar)
 print()
 print('Total negative words for article one is', nvewalk)
 print('Total negative words for article two is', nvetrain)
