@@ -180,6 +180,7 @@ def boyer_moore_horspool(pattern, text):
     return found_indexes
 
 
+print()
 print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 print('         Positive & Negative words: ')
 print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
