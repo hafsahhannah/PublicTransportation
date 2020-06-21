@@ -1,6 +1,6 @@
 import re
 import urllib.request
-
+import pprint
 from bs4 import BeautifulSoup
 from bs4.element import Comment
 from collections import defaultdict
@@ -22,7 +22,6 @@ def text_from_html(body):
     visible_texts = filter(tag_visible, texts)
     return u" ".join(t.strip() for t in visible_texts)
 
-
 # articles
 bus = urllib.request.urlopen('https://www.tripadvisor.com.my/ShowUserReviews-g298570-d6652603-r527465461'
                              '-GO_KL_City_Bus-Kuala_Lumpur_Wilayah_Persekutuan.html').read()
@@ -39,10 +38,15 @@ car = urllib.request.urlopen('https://www.entrepreneur.com/article/334690').read
 # print(text_from_html(car))
 print('Article 4 extracted...')
 
-print('Total number of words for the first article: \n', (len(bus)), 'words')
-print('Total number of words for the second article: \n', (len(train)), 'words')
-print('Total number of words for the third article: \n', (len(walk)), 'words')
-print('Total number of words for the fourth article: \n', (len(car)), 'words')
+res1 = len(bus.split())
+res2 = len(train.split())
+res3 = len(walk.split())
+res4 = len(car.split())
+
+print('Total number of words for the first article: \n', (res1), 'words')
+print('Total number of words for the second article: \n', (res2), 'words')
+print('Total number of words for the third article: \n', (res3), 'words')
+print('Total number of words for the fourth article: \n', (res4), 'words')
 
 print('           Word Frequency for the 1st article: ')
 print('▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼')
@@ -53,8 +57,12 @@ one_pattern = re.findall(r'\b[a-z]{3,15}\b', one_text)
 for word in one_pattern:
     count = frequency.get(word, 0)
     frequency[word] = count + 1
+    semua = frequency[word]+count
 
 frequency_list = frequency.keys()
+for words in frequency_list:
+    print(words, frequency[words])
+
 
 print('           Word Frequency for the 2nd article: ')
 print('▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼')
@@ -93,7 +101,7 @@ frequency_list = frequency.keys()
 for words in frequency_list:
     print(words, frequency[words])
 
-print('           Stop Words Frequency for the 4th article: ')
+print('           Stop Words Frequency: ')
 print('▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼')
 
 
@@ -139,16 +147,33 @@ for x in collection_a:
     print('━━━━━━━━━━━━━━━━ ✠ ━━━━━━━━━━━━━━━━')
     print('          Without stopwords: ')
     print('━━━━━━━━━━━━━━━━ ✠ ━━━━━━━━━━━━━━━━')
-    result = ' '.join(resultwords)
-    print(result)
-    # positive words file
-    f = open('positive_words.txt')
-    positive = f.read()
-    f.close()
-    # negative words file
-    f = open('negative_words.txt')
-    negative = f.read()
-    f.close()
+    print()
+    if x == collection_a[0]:
+        result1 = ' '.join(resultwords)
+        len1 = len(result1.split())
+        print('Stop words frequency for article 1:', (len1))
+    if x == collection_a[1]:
+        result1 = ' '.join(resultwords)
+        len2 = len(result1.split())
+        print('Stop words frequency for article 2:', (len2))
+    if x == collection_a[2]:
+        result1 = ' '.join(resultwords)
+        len3 = len(result1.split())
+        print('Stop words frequency for article 3:', (len3))
+    if x == collection_a[3]:
+        result1 = ' '.join(resultwords)
+        len4 = len(result1.split())
+        print('Stop words frequency for article 4:', (len4))
+
+
+# positive words file
+f = open('positive_words.txt')
+positive = f.read()
+f.close()
+# negative words file
+f = open('negative_words.txt')
+negative = f.read()
+f.close()
 
 
 def boyer_moore_horspool(pattern, text):
