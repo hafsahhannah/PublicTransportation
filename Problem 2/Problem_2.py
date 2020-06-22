@@ -43,13 +43,14 @@ res2 = len(train.split())
 res3 = len(walk.split())
 res4 = len(car.split())
 
-print('Total number of words for the first article: \n', (res1), 'words')
-print('Total number of words for the second article: \n', (res2), 'words')
-print('Total number of words for the third article: \n', (res3), 'words')
-print('Total number of words for the fourth article: \n', (res4), 'words')
+print('Total number of words for the first article (bus): \n', (res1), 'words')
+print('Total number of words for the second article (train): \n', (res2), 'words')
+print('Total number of words for the third article (walk): \n', (res3), 'words')
+print('Total number of words for the fourth article (car): \n', (res4), 'words')
 
+print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 print('           Word Frequency for the 1st article: ')
-print('▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼')
+print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 # ni method utk cari all the word frequency dalam web html tu
 one_text = (text_from_html(bus)).lower()
 one_pattern = re.findall(r'\b[a-z]{3,15}\b', one_text)
@@ -63,9 +64,9 @@ frequency_list = frequency.keys()
 for words in frequency_list:
     print(words, frequency[words])
 
-
+print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 print('           Word Frequency for the 2nd article: ')
-print('▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼')
+print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 two_text = (text_from_html(train)).lower()
 two_pattern = re.findall(r'\b[a-z]{3,15}\b', two_text)
 for word in two_pattern:
@@ -76,8 +77,9 @@ frequency_list = frequency.keys()
 for words in frequency_list:
     print(words, frequency[words])
 
+print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 print('           Word Frequency for the 3rd article: ')
-print('▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼')
+print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 three_text = (text_from_html(walk)).lower()
 three_pattern = re.findall(r'\b[a-z]{3,15}\b', three_text)
 for word in three_pattern:
@@ -88,8 +90,9 @@ frequency_list = frequency.keys()
 for words in frequency_list:
     print(words, frequency[words])
 
+print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 print('           Word Frequency for the 4th article: ')
-print('▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼')
+print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 four_text = (text_from_html(car)).lower()
 four_pattern = re.findall(r'\b[a-z]{3,15}\b', four_text)
 
@@ -101,8 +104,9 @@ frequency_list = frequency.keys()
 for words in frequency_list:
     print(words, frequency[words])
 
-print('           Stop Words Frequency: ')
-print('▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼━━━━━━━━━━━━━━━━━━▼')
+print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+print('                  Stop Words Frequency: ')
+print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 
 
 def search(word, text):  # using rabin-karp algorithm method untuk cari stop words and frequency dia
@@ -144,26 +148,25 @@ for x in collection_a:
 # ni utk delete stopwords
 for x in collection_a:
     resultwords = [word for word in re.split("\W+", x) if word.lower() not in stop_words]
-    print('━━━━━━━━━━━━━━━━ ✠ ━━━━━━━━━━━━━━━━')
+    print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
     print('          Without stopwords: ')
-    print('━━━━━━━━━━━━━━━━ ✠ ━━━━━━━━━━━━━━━━')
-    print()
+    print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
     if x == collection_a[0]:
         result1 = ' '.join(resultwords)
         len1 = len(result1.split())
-        print('Stop words frequency for article 1:', (len1))
+        print('Stop words frequency for article 1: \n', (len1), 'words')
     if x == collection_a[1]:
         result1 = ' '.join(resultwords)
         len2 = len(result1.split())
-        print('Stop words frequency for article 2:', (len2))
+        print('Stop words frequency for article 2: \n', (len2), 'words')
     if x == collection_a[2]:
         result1 = ' '.join(resultwords)
         len3 = len(result1.split())
-        print('Stop words frequency for article 3:', (len3))
+        print('Stop words frequency for article 3: \n', (len3), 'words')
     if x == collection_a[3]:
         result1 = ' '.join(resultwords)
         len4 = len(result1.split())
-        print('Stop words frequency for article 4:', (len4))
+        print('Stop words frequency for article 4: \n', (len4), 'words')
 
 
 # positive words file
@@ -265,9 +268,11 @@ print('Total negative words for article two is', nvetrain)
 print('Total negative words for article three is', nvewalk)
 print('Total negative words for article four is', nvecar)
 
+print()
 print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 print('            Conclusion: ')
 print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+print()
 
 ListA = [tvebus, tvetrain, tvewalk, tvecar]
 ListB = [nvebus, nvetrain, nvewalk, nvecar]
